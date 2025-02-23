@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_study_browser/page/login.dart';
 import 'package:online_study_browser/utils/shared_preference_clien.dart';
 import 'package:online_study_browser/utils/utils.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,24 +26,28 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(1920, 1080),
-      minTextAdapt: true, // 是否根据设计稿的最小宽度适配，默认为false
-      splitScreenMode: true, // 是否根据设计稿的最大宽度适配，默认为false
-      builder: (_, child) {
-        return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            home: isLogin
-                ? const Center(
-                    child: Text('Hello World'),
-                  )
-                : LoginPage());
-      },
-    );
+    return ResponsiveBuilder(builder: (context, sizeInfomation) {
+      return ScreenUtilInit(
+        designSize: sizeInfomation.isDesktop
+            ? const Size(1920, 1080)
+            : const Size(375,812),
+        minTextAdapt: true, // 是否根据设计稿的最小宽度适配，默认为false
+        splitScreenMode: true, // 是否根据设计稿的最大宽度适配，默认为false
+        builder: (_, child) {
+          return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Flutter Demo',
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                useMaterial3: true,
+              ),
+              home: isLogin
+                  ? const Center(
+                      child: Text('Hello World'),
+                    )
+                  : LoginPage());
+        },
+      );
+    });
   }
 }
